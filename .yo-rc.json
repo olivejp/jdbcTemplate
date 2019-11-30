@@ -1,0 +1,45 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "nc.oliweb.jdbctemplate",
+      "nativeLanguage": "fr"
+    },
+    "jhipsterVersion": "6.5.1",
+    "applicationType": "monolith",
+    "baseName": "jdbcTemplate",
+    "packageName": "nc.oliweb.jdbctemplate",
+    "packageFolder": "nc/oliweb/jdbctemplate",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": "kafka",
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "NWFmN2M3Y2I0NjczMzExYjhmMzM2ZmI3YzAyNjhhMTFiYzZlYjg4YjJiYTkyNjljYWRjNjJmMzFjNjUwMzZmOWQyM2QzNmI4M2FkZDdkM2ViOWFmZDVjMWY5YWNhZmEwNmQ5MTMxYTllYTJiOGQyYWVkZGNmNTUzYmFkODZiNjc=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "materia",
+    "clientThemeVariant": "dark",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "fr",
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "blueprints": []
+  }
+}
