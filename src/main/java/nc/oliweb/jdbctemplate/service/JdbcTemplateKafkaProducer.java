@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.engine.IterationStatusVar;
 
 @Service
 public class JdbcTemplateKafkaProducer {
@@ -18,8 +19,11 @@ public class JdbcTemplateKafkaProducer {
 
     private KafkaProducer<String, String> kafkaProducer;
 
-    public JdbcTemplateKafkaProducer(KafkaProperties kafkaProperties) {
+    private TestService testService;
+
+    public JdbcTemplateKafkaProducer(KafkaProperties kafkaProperties, TestService test) {
         this.kafkaProperties = kafkaProperties;
+        this.testService = test;
     }
 
     public void init() {

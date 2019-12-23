@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
 import {Observable, Observer, Subscription} from 'rxjs';
 import {Location} from '@angular/common';
 import {AuthServerProvider} from '../auth/auth-jwt.service';
 
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
+import {MessageDto} from "app/entities/message.dto";
 
 @Injectable({providedIn: 'root'})
-export class JhiTrackerService {
+export class JhiMessageService {
   stompClient = null;
-  subscriber = null;
+  stompSubscriber = null;
   connection: Promise<any>;
   connectedPromise: any;
   listener: Observable<any>;
@@ -19,7 +19,6 @@ export class JhiTrackerService {
   private subscription: Subscription;
 
   constructor(
-    private router: Router,
     private authServerProvider: AuthServerProvider,
     private location: Location
   ) {
@@ -32,7 +31,7 @@ export class JhiTrackerService {
       this.connection = this.createConnection();
     }
     // building absolute path so that websocket doesn't fail when deploying with a context path
-    let url = '/websocket/tracker';
+    let url = '/websocket/chat';
     url = this.location.prepareExternalUrl(url);
     const authToken = this.authServerProvider.getToken();
     if (authToken) {
@@ -44,13 +43,8 @@ export class JhiTrackerService {
     this.stompClient.connect(headers, () => {
       this.connectedPromise('success');
       this.connectedPromise = null;
-      this.sendActivity();
+      this.sendMessage(new MessageDto('Bonjour, je viens de rejoindre le chat.'));
       if (!this.alreadyConnectedOnce) {
-        this.subscription = this.router.events.subscribe(event => {
-          if (event instanceof NavigationEnd) {
-            this.sendActivity();
-          }
-        });
         this.alreadyConnectedOnce = true;
       }
     });
@@ -72,11 +66,11 @@ export class JhiTrackerService {
     return this.listener;
   }
 
-  sendActivity() {
+  sendMessage(message: MessageDto) {
     if (this.stompClient !== null && this.stompClient.connected) {
       this.stompClient.send(
-        '/topic/activity', // destination
-        JSON.stringify({page: this.router.routerState.snapshot.url}), // body
+        '/topic/chat', // destination
+        JSON.stringify(message), // body
         {} // header
       );
     }
@@ -84,15 +78,15 @@ export class JhiTrackerService {
 
   subscribe() {
     this.connection.then(() => {
-      this.subscriber = this.stompClient.subscribe('/topic/tracker', data => {
+      this.stompSubscriber = this.stompClient.subscribe('/topic/messages', data => {
         this.listenerObserver.next(JSON.parse(data.body));
       });
     });
   }
 
   unsubscribe() {
-    if (this.subscriber !== null) {
-      this.subscriber.unsubscribe();
+    if (this.stompSubscriber !== null) {
+      this.stompSubscriber.unsubscribe();
     }
     this.listener = this.createListener();
   }

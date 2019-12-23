@@ -1,0 +1,29 @@
+<div>
+    <h2 id="tracker-page-heading" jhiTranslate="tracker.title">Chat</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped" aria-describedby="tracker-page-heading">
+            <thead>
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Message</th>
+                <th scope="col">Time</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let message of _messages">
+                <td>{{message.from}}</td>
+                <td>{{message.text}}</td>
+                <td>{{message.time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <form (ngSubmit)="sendMessage()" name="form" role="form" [formGroup]="messageForm">
+        <input type="text" class="form-control"
+               formControlName="newMessage"
+               placeholder="Tapez votre message ici" >
+        <button type="submit">Envoyer</button>
+    </form>
+</div>

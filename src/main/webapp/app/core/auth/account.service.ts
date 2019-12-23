@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
-import { SessionStorageService } from 'ngx-webstorage';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, of } from 'rxjs';
-import { shareReplay, tap, catchError } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {JhiLanguageService} from 'ng-jhipster';
+import {SessionStorageService} from 'ngx-webstorage';
+import {HttpClient} from '@angular/common/http';
+import {Observable, of, Subject} from 'rxjs';
+import {catchError, shareReplay, tap} from 'rxjs/operators';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { Account } from 'app/core/user/account.model';
-import { JhiTrackerService } from '../tracker/tracker.service';
+import {SERVER_API_URL} from 'app/app.constants';
+import {Account} from 'app/core/user/account.model';
+import {JhiTrackerService} from '../tracker/tracker.service';
+import {JhiMessageService} from "app/core/tracker/message.service";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AccountService {
   private userIdentity: Account;
   private authenticated = false;
@@ -20,8 +21,10 @@ export class AccountService {
     private languageService: JhiLanguageService,
     private sessionStorage: SessionStorageService,
     private http: HttpClient,
-    private trackerService: JhiTrackerService
-  ) {}
+    private trackerService: JhiTrackerService,
+    private messageService: JhiMessageService,
+  ) {
+  }
 
   fetch(): Observable<Account> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
@@ -67,6 +70,7 @@ export class AccountService {
             this.userIdentity = account;
             this.authenticated = true;
             this.trackerService.connect();
+            this.messageService.connect();
             // After retrieve the account info, the language will be changed to
             // the user's preferred language configured in the account setting
             if (this.userIdentity.langKey) {

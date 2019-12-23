@@ -5,6 +5,7 @@ import nc.oliweb.jdbctemplate.config.DefaultProfileUtil;
 
 import nc.oliweb.jdbctemplate.service.JdbcTemplateKafkaConsumer;
 import nc.oliweb.jdbctemplate.service.JdbcTemplateKafkaProducer;
+import nc.oliweb.jdbctemplate.service.TestService;
 import org.springframework.context.ConfigurableApplicationContext;
 import io.github.jhipster.config.JHipsterConstants;
 
@@ -68,6 +69,7 @@ public class JdbcTemplateApp implements InitializingBean {
         ConfigurableApplicationContext applicationContext = app.run(args);
         applicationContext.getBean(JdbcTemplateKafkaProducer.class).init();
         applicationContext.getBean(JdbcTemplateKafkaConsumer.class).start();
+        applicationContext.getBean(TestService.class).start();
         Environment env = applicationContext.getEnvironment();
         logApplicationStartup(env);
     }
